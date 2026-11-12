@@ -6,6 +6,13 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-11-12
+
+### Changed
+
+- Releases are published from GitHub Actions with npm trusted publishing and
+  carry provenance. The code is the same as 1.0.0.
+
 ## [1.0.0] - 2026-11-12
 
 First release.
