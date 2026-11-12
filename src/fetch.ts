@@ -136,7 +136,7 @@ export async function request<T>(
       if (body.error) errorMessage = body.error;
       if (body.code) errorCode = body.code;
     } catch {
-      // Body wasn't JSON — use defaults
+      // Body wasn't JSON, so use the defaults
     }
 
     // Retryable? Only retry 429 and 5xx, and never a used-up allowance
@@ -151,7 +151,7 @@ export async function request<T>(
       continue;
     }
 
-    // Non-retryable or exhausted retries — throw typed error
+    // Not retryable, or out of retries: throw a typed error
     throw toTypedError(res.status, errorMessage, errorCode, rateLimit, res.headers);
   }
 

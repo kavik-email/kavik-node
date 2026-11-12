@@ -42,5 +42,5 @@ export {
   WebhookSignatureError,
 } from './errors';
 
-// Webhook utilities (standalone — no client instance needed)
+// Webhook utilities (standalone: no client instance needed)
 export { verifyWebhookSignature, parseWebhookEvent } from './webhook';
