@@ -1,0 +1,46 @@
+// Client
+export { Kavik } from './client';
+
+// Types
+export type {
+  KavikOptions,
+  KavikResponse,
+  RateLimitInfo,
+  VerificationResult,
+  BatchResult,
+  BulkJob,
+  BulkJobResult,
+  BulkJobStatus,
+  BulkUploadOptions,
+  PollOptions,
+  DomainDeliverability,
+  DomainAuth,
+  SPFResult,
+  DKIMResult,
+  DMARCResult,
+  BlacklistResult,
+  BlacklistEntry,
+  Grade,
+  Risk,
+  SmtpCheck,
+  SpamTrapRisk,
+  BulkJobCompletedEvent,
+  WebhookSummary,
+  VerifyWebhookOptions,
+  RequestCallOptions,
+  ErrorCode,
+} from './types';
+
+// Errors
+export {
+  KavikError,
+  RateLimitError,
+  QuotaExceededError,
+  DailyLimitError,
+  AuthenticationError,
+  NotFoundError,
+  WebhookSignatureError,
+} from './errors';
+
+// Webhook utilities (standalone — no client instance needed)
+export { verifyWebhookSignature, parseWebhookEvent } from './webhook';

@@ -1,0 +1,106 @@
+import type { ErrorCode, RateLimitInfo } from './types';
+
+/**
+ * Base error for all Kavik.email API errors.
+ *
+ * Check the `code` property for a machine-readable error code,
+ * and `status` for the HTTP status.
+ */
+export class KavikError extends Error {
+  readonly code: ErrorCode;
+  readonly status: number;
+  readonly rateLimit: RateLimitInfo | null;
+
+  constructor(
+    message: string,
+    code: ErrorCode,
+    status: number,
+    rateLimit?: RateLimitInfo,
+  ) {
+    super(message);
+    this.name = 'KavikError';
+    this.code = code;
+    this.status = status;
+    this.rateLimit = rateLimit ?? null;
+  }
+}
+
+/**
+ * Thrown when per-minute rate limit is exceeded (429 RATE_LIMITED).
+ *
+ * Use `retryAfter` to know how long to wait before retrying.
+ */
+export class RateLimitError extends KavikError {
+  readonly retryAfter: number;
+
+  constructor(message: string, retryAfter: number, rateLimit: RateLimitInfo) {
+    super(message, 'RATE_LIMITED', 429, rateLimit);
+    this.name = 'RateLimitError';
+    this.retryAfter = retryAfter;
+  }
+}
+
+/**
+ * Thrown when monthly quota is exhausted and no PAYG credits remain (429 QUOTA_EXCEEDED).
+ *
+ * The user needs to purchase credit packs or wait for the next billing cycle.
+ */
+export class QuotaExceededError extends KavikError {
+  constructor(message: string, rateLimit: RateLimitInfo) {
+    super(message, 'QUOTA_EXCEEDED', 429, rateLimit);
+    this.name = 'QuotaExceededError';
+  }
+}
+
+/**
+ * Thrown when a Free plan account without credits has used its checks for
+ * the day (429 DAILY_LIMIT). It is never retried: the limit resets at
+ * 00:00 UTC, `retryAfter` seconds from the response, and any plan or credit
+ * pack removes it.
+ *
+ * `limit` and `remaining` come from `X-Daily-Limit` and `X-Daily-Remaining`.
+ * `remaining` is above 0 when a batch was larger than what is left today:
+ * a batch of at most `remaining` addresses still goes through.
+ */
+export class DailyLimitError extends KavikError {
+  readonly retryAfter: number | null;
+  readonly limit: number | null;
+  readonly remaining: number | null;
+
+  constructor(
+    message: string,
+    rateLimit: RateLimitInfo,
+    limit: number | null,
+    remaining: number | null,
+  ) {
+    super(message, 'DAILY_LIMIT', 429, rateLimit);
+    this.name = 'DailyLimitError';
+    this.retryAfter = rateLimit.retryAfter;
+    this.limit = limit;
+    this.remaining = remaining;
+  }
+}
+
+/** Thrown when the API key is missing or invalid (401). */
+export class AuthenticationError extends KavikError {
+  constructor(message: string = 'Invalid or missing API key') {
+    super(message, 'UNAUTHORIZED', 401);
+    this.name = 'AuthenticationError';
+  }
+}
+
+/** Thrown when the requested resource is not found (404). */
+export class NotFoundError extends KavikError {
+  constructor(message: string = 'Resource not found') {
+    super(message, 'NOT_FOUND', 404);
+    this.name = 'NotFoundError';
+  }
+}
+
+/** Thrown when webhook signature verification fails. */
+export class WebhookSignatureError extends Error {
+  constructor(message: string = 'Invalid webhook signature') {
+    super(message);
+    this.name = 'WebhookSignatureError';
+  }
+}
