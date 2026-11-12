@@ -237,8 +237,12 @@ export interface BulkJobCompletedEvent {
 export interface VerifyWebhookOptions {
   /** Raw request body (string or bytes). */
   payload: string | BufferSource;
-  /** Value of the `X-EVA-Signature` header. */
-  signature: string;
+  /**
+   * Value of the `X-EVA-Signature` header, as your framework gives it. A
+   * missing header (`undefined` or `null`) or a repeated one (an array) fails
+   * the check.
+   */
+  signature: string | string[] | null | undefined;
   /** Your webhook signing secret. */
   secret: string;
 }

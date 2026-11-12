@@ -90,7 +90,7 @@ for (const result of data.results) {
 ### Bulk File Upload + Polling
 
 ```typescript
-import { readFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 
 const csvFile = readFileSync('emails.csv');
 
@@ -158,14 +158,14 @@ import type { BulkJobCompletedEvent } from 'kavikemail';
 const isValid = await verifyWebhookSignature({
   payload: rawBody,
   signature: req.headers['x-eva-signature'],
-  secret: process.env.KAVIK_WEBHOOK_SECRET,
+  secret: process.env.KAVIK_WEBHOOK_SECRET!,
 });
 
 // Option 2: Verify + parse in one step
 const event = await parseWebhookEvent<BulkJobCompletedEvent>({
   payload: rawBody,
   signature: req.headers['x-eva-signature'],
-  secret: process.env.KAVIK_WEBHOOK_SECRET,
+  secret: process.env.KAVIK_WEBHOOK_SECRET!,
 });
 
 console.log(event.job_id);
@@ -185,7 +185,7 @@ app.post('/webhook/kavik', express.text({ type: '*/*' }), async (req, res) => {
   try {
     const event = await parseWebhookEvent<BulkJobCompletedEvent>({
       payload: req.body,
-      signature: req.headers['x-eva-signature'] as string,
+      signature: req.headers['x-eva-signature'],
       secret: process.env.KAVIK_WEBHOOK_SECRET!,
     });
 

@@ -6,6 +6,16 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.0.2] - 2026-11-12
+
+### Fixed
+
+- `verifyWebhookSignature` and `parseWebhookEvent` take the signature header
+  as your framework gives it (`string | string[] | null | undefined`), so
+  `req.headers['x-eva-signature']` compiles without a cast. A missing or
+  repeated header still fails the check.
+- README samples compile as written (`writeFileSync` import, webhook secret).
+
 ## [1.0.1] - 2026-11-12
 
 ### Changed

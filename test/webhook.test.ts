@@ -23,6 +23,11 @@ test('a view into a larger buffer verifies (express.raw gives a pooled Buffer)',
 });
 
 test('a missing signature header is a failed check, not a crash', async () => {
-  const missing = undefined as unknown as string;
-  assert.equal(await verifyWebhookSignature({ payload: body, signature: missing, secret }), false);
+  assert.equal(await verifyWebhookSignature({ payload: body, signature: undefined, secret }), false);
+  // fetch's Headers.get() gives null for a missing header.
+  assert.equal(await verifyWebhookSignature({ payload: body, signature: null, secret }), false);
+});
+
+test('a repeated signature header fails the check, even when one copy is right', async () => {
+  assert.equal(await verifyWebhookSignature({ payload: body, signature: [signature, signature], secret }), false);
 });
