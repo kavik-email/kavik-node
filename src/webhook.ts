@@ -56,7 +56,7 @@ export async function verifyWebhookSignature(
  *
  * @example
  * ```ts
- * import { parseWebhookEvent, BulkJobCompletedEvent } from 'kavik';
+ * import { parseWebhookEvent, BulkJobCompletedEvent } from 'kavikemail';
  *
  * const event = await parseWebhookEvent<BulkJobCompletedEvent>({
  *   payload: req.body,

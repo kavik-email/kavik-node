@@ -1,4 +1,4 @@
-# kavik
+# kavikemail
 
 Official JavaScript and TypeScript SDK for the **Kavik.email** email verification API.
 
@@ -7,13 +7,13 @@ Zero dependencies. Works with Node.js 20+, Deno, Bun, and modern browsers.
 ## Installation
 
 ```bash
-npm install kavik
+npm install kavikemail
 ```
 
 ## Quick Start
 
 ```typescript
-import { Kavik } from 'kavik';
+import { Kavik } from 'kavikemail';
 
 const kavik = new Kavik('eva_...');
 
@@ -151,8 +151,8 @@ const { data: job } = await kavik.getBulkJob('job-id-123');
 Verify incoming webhook signatures without instantiating the client:
 
 ```typescript
-import { verifyWebhookSignature, parseWebhookEvent } from 'kavik';
-import type { BulkJobCompletedEvent } from 'kavik';
+import { verifyWebhookSignature, parseWebhookEvent } from 'kavikemail';
+import type { BulkJobCompletedEvent } from 'kavikemail';
 
 // Option 1: Verify only
 const isValid = await verifyWebhookSignature({
@@ -176,8 +176,8 @@ console.log(event.summary); // { safe: 800, risky: 100, catchall: 50, invalid: 5
 
 ```typescript
 import express from 'express';
-import { parseWebhookEvent } from 'kavik';
-import type { BulkJobCompletedEvent } from 'kavik';
+import { parseWebhookEvent } from 'kavikemail';
+import type { BulkJobCompletedEvent } from 'kavikemail';
 
 const app = express();
 
@@ -210,7 +210,7 @@ import {
   QuotaExceededError,
   AuthenticationError,
   NotFoundError,
-} from 'kavik';
+} from 'kavikemail';
 
 const kavik = new Kavik('eva_...');
 

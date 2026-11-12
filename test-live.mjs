@@ -1,5 +1,5 @@
 /**
- * Live integration test for the kavik package
+ * Live integration test for the kavikemail package
  * Uses the test API key from project config.
  * Run: node test-live.mjs
  */

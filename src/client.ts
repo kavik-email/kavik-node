@@ -20,7 +20,7 @@ import type {
  *
  * @example
  * ```ts
- * import { Kavik } from 'kavik';
+ * import { Kavik } from 'kavikemail';
  *
  * const kavik = new Kavik('eva_...');
  * const { data, rateLimit } = await kavik.verify('user@example.com');
